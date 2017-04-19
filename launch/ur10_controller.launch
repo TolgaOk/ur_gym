@@ -1,0 +1,14 @@
+<launch>
+
+    <include file="$(find ur_gazebo)/launch/controller_utils.launch" />
+
+    <rosparam command="load" file="$(find ur_gym)/controllers/velocity_control.yaml" />
+
+    <node args="spawn velocity_controller/shoulder_pan_joint_controller" name="shoulder_pan_spawner" output="screen" pkg="controller_manager" respawn="false" type="controller_manager" />
+    <node args="spawn velocity_controller/shoulder_lift_joint_controller" name="shoulder_lift_spawner" output="screen" pkg="controller_manager" respawn="false" type="controller_manager" />
+    <node args="spawn velocity_controller/elbow_joint_controller" name="elbow_spawner" output="screen" pkg="controller_manager" respawn="false" type="controller_manager" />
+    <node args="spawn velocity_controller/wrist_1_joint_controller" name="wrist_1_spawner" output="screen" pkg="controller_manager" respawn="false" type="controller_manager" />
+    <node args="spawn velocity_controller/wrist_2_joint_controller" name="wrist_2_spawner" output="screen" pkg="controller_manager" respawn="false" type="controller_manager" />
+    <node args="spawn velocity_controller/wrist_3_joint_controller" name="wrist_3_spawner" output="screen" pkg="controller_manager" respawn="false" type="controller_manager" />
+
+</launch>

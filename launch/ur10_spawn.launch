@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="limited" default="false"/>
+    <!-- send robot urdf to param server -->
+    <param unless="$(arg limited)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_description)/urdf/ur10_robot.urdf.xacro'" />
+    <param if="$(arg limited)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_description)/urdf/ur10_joint_limited_robot.urdf.xacro'" />
+
+    <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.5" respawn="false" output="screen" />
+
+    <include file="$(find ur_gym)/launch/ur10_controller.launch" />
+</launch>
