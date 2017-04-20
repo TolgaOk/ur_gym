@@ -14,7 +14,6 @@ from std_srvs.srv import Empty
 from sensor_msgs.msg import JointState
 from tf2_msgs.msg import TFMessage
 from controllers import position_contol, velocity_contol, acceleration_contol, effort_contol
-t_f = lambda: time.time()
 
 class ur10_env(object):
     def __init__(self, action_type, frequency, transmission_path=None, launch_path=None):
@@ -35,7 +34,7 @@ class ur10_env(object):
 
         self.target = [1, 1, 1]
         self.task_limit = 0.01
-        self.initial_angle = np.zeros(6, dtype=np.float32)
+        self.initial_angle = np.array([1, 1, 0, 1, 0, 0], dtype=np.float32)*-1*np.pi/2
 
         action_controllers = {name: obj for name, obj in zip(["postion", "velocity", "acceleration", "effort"],
                                         [position_contol, velocity_contol, acceleration_contol, effort_contol])}
@@ -51,7 +50,7 @@ class ur10_env(object):
         self.period = rospy.Duration(1./frequency)
 
 
-        
+
 
         try:
             rospy.wait_for_service("/gazebo/pause_physics", timeout=0.01)
@@ -82,7 +81,7 @@ class ur10_env(object):
         def update_state_callback(data):
             self._state = data
             try:
-                position, quaternion = self.tf_listener.lookupTransform("/base", "/ee_link", rospy.Time(0))
+                position, quaternion = self.tf_listener.lookupTransform("/base_link", "/ee_link", rospy.Time(0))
                 self.position = position
             except KeyError:
                 pass
@@ -95,13 +94,10 @@ class ur10_env(object):
                     self._transform_msg[1] = data
 
         state_subscriber = rospy.Subscriber("/joint_states", JointState, callback=update_state_callback, queue_size=1)
-        # tf_subscriber = rospy.Subscriber("/tf", TFMessage, callback=update_tf_callback, queue_size=1)
         rospy.wait_for_service("/gazebo/unpause_physics", timeout=None)
 
         self.unpause()
 
-
-        start_t = t_f()
         start_ros_time = rospy.Time.now()
         while True:
             self.action_control.publish_all(action)
@@ -117,21 +113,17 @@ class ur10_env(object):
             else:
                 rospy.sleep(self.period/5.0)
 
-        print t_f() - start_t
-
-
-        ros_joint_names = {name: index for name, index in zip(self._state.name, range(len(self._state.name)))}
+        # ros_joint_names = {name: index for name, index in zip(self._state.name, range(len(self._state.name)))}
 
         #TODO: Make simple state that is also syncronized with actions and joint names
         self._state = np.concatenate([self._state.position, self._state.velocity], axis=0)
 
-        print self.position
-        distance_to_target = np.sqrt(np.sum([x**2 + y**2 for x, y in zip(self.position, self.target)]))
+        distance_to_target = np.sqrt(np.sum([(x-y)**2 for x, y in zip(self.position, self.target)]))
         if distance_to_target < self.task_limit:
             is_done = True
             reward = 2.
         else:
-            reward = -distance_to_target*2
+            reward = -distance_to_target
 
         return (self._state, reward, is_done, dict())
 
@@ -171,9 +163,6 @@ class ur10_env(object):
         rospy.wait_for_service("/gazebo/unpause_physics", timeout=2)
         self.unpause()
         self.joints_initializer("robot", "", self.joint_names, self.initial_angle)
-        while True:
-            try:
-                rospy.wait_for_message("/joint_states", JointState, timeout=1.0)
-                break
-            except:
-                print "Wainting for robot topics (/joint_states) to republish again!"
+        _state = rospy.wait_for_message("/joint_states", JointState, timeout=0.2)
+        _state = np.concatenate([_state.position, _state.velocity], axis=0)
+        return _state
