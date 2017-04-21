@@ -1,17 +1,12 @@
 import rospy
-from std_srvs.srv import Empty
-import time
-from gazebo_msgs.srv import DeleteModel
-import roslaunch
+import time, os
 from environment import ur10_env
 import numpy as np
 
+# env = ur10_env("velocity", 10)
+# for j in range(400):
+#     for i in range(50):
+#         a = env._step(np.clip(np.random.normal(size=(6)))
+#     env._reset()
 
-rospy.init_node("basic_node", anonymous=True)
-env = ur10_env("velocity", 5)
-for j in range(4):
-    for i in range(50):
-        a = env._step(np.random.normal(0., 1, size=(6)))
-        if i == 40:
-            print a[1]
-    env._reset()
+print "/".join(os.path.realpath(__file__).split("/")[:-2] + ["launch", "ur10_gym.launch"])
