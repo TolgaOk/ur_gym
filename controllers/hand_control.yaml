@@ -1,0 +1,80 @@
+effort_controller:
+    joint_0_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_0
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_1_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_1
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_2_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_2
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_3_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_3
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_4_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_4
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_5_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_5
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_6_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_6
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_7_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_7
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_8_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_8
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_9_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_9
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_10_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_10
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_11_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_11
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_12_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_12
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_13_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_13
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_14_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_14
+      pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    joint_15_controller:
+      type: effort_controllers/JointEffortController
+      joint: joint_15
+      pid: {p: 100.0, i: 0.01, d: 10.0}

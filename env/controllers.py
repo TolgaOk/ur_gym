@@ -39,9 +39,12 @@ class control(object):
             both transmission file in the ur_description package(catkin package)
             and launch file "ur10_gym.launch" must not be changed.
     """
-    def __init__(self, control_method_string):
+    def __init__(self, control_method_string, joint_names=None):
         self.control_method_string = control_method_string
-        self.joint_names = ["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint", "wrist_1_joint", "wrist_2_joint", "wrist_3_joint"]
+        if not joint_names:
+            self.joint_names = ["shoulder_pan_joint", "shoulder_lift_joint", "elbow_joint", "wrist_1_joint", "wrist_2_joint", "wrist_3_joint"]
+        else:
+            self.joint_names = joint_names
         topic_name = lambda name: "/{}_controller/{}_controller/command".format(control_method_string, name)
         self.publishers = {name: rospy.Publisher(topic_name(name), Float64, queue_size=1) for name in self.joint_names}
 

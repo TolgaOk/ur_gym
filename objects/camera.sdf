@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="camera">
+    <joint name="camera_fixed" type="fixed">
+      <parent>world</parent>
+      <child>camera::link</child>
+       <axis>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+        </limit>
+        <xyz>0 0 2</xyz>
+        </axis>
+    </joint>
+    <link name="link">
+      <pose>0 0 2 0 0.9 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.000166667</ixx>
+          <iyy>0.000166667</iyy>
+          <izz>0.000166667</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.1</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.1</size>
+          </box>
+        </geometry>
+      </visual>
+      <sensor name="camera" type="camera">
+        <camera>
+          <horizontal_fov>1.247</horizontal_fov>
+          <image>
+            <width>160</width>
+            <height>160</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>300</far>
+          </clip>
+        </camera>
+        <visualize>true</visualize>
+
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>25.0</updateRate>
+            <cameraName>ur10/camera</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>camera_link</frameName>
+            <hackBaseline>0.07</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionK3>0.0</distortionK3>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </link>
+  </model>
+</sdf>
