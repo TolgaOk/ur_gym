@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-  <arg name="paused" default="true"/>
-  <arg name="gui" default="true"/>
+  <arg name="paused" default="false"/>
+  <arg name="gui" default="false"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" default="worlds/empty.world"/>
@@ -11,22 +11,14 @@
   </include>
 
   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ur_gym)/objects/ur_hand.xacro'" />
-  <node name="spawn_hand_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model hand -z 0.5" respawn="false" output="screen" />
+  <node name="spawn_ur10_with_hand" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.5" respawn="false" output="screen" />
 
-  <!-- <include file="$(find ur_gazebo)/launch/controller_utils.launch" /> -->
   <include file="$(find ur_gym)/launch/ur10_hand_controller.launch" />
-  <!-- <param name="ur_grip_description" textfile="$(find allegro_hand_description)/allegro_hand_description_right.urdf" />
-  <node name="spawn_gripper_ur10" pkg="gazebo_ros" type="spawn_model" args="-gazebo -param ur_grip_description -model ur_gripper"  respawn="false" output="screen" /> -->
 
-  <!-- <param name="allegro_description" textfile="$(find allegro_hand_description)/objects/ur10_with_hand.sdf"/>
-  <node name="spawn_hand" pkg="gazebo_ros" type="spawn_model" args="-sdf -param allegro_description -model hand" respawn="false" output="screen" /> -->
-
-
-
-  <!-- <param name="cylindir_object_description" textfile="$(find ur_gym)/objects/cylindir.sdf" />
-  <node name="spawn_cylindir" pkg="gazebo_ros" type="spawn_model" args="-gazebo -param cylindir_object_description -x 1 -y 1 -z 0.06 -model cylindir"  respawn="false" output="screen" />
+  <param name="cylindir_object_description" textfile="$(find ur_gym)/objects/cylindir.sdf" />
+  <node name="spawn_cylindir" pkg="gazebo_ros" type="spawn_model" args="-gazebo -param cylindir_object_description -x 0.40 -y 0.6 -model cylindir"  respawn="false" output="screen" />
 
   <param name="camera_description" textfile="$(find ur_gym)/objects/camera.sdf" />
-  <node name="spawn_camera" pkg="gazebo_ros" type="spawn_model" args="-gazebo -param camera_description -model camera"  respawn="false" output="screen" /> -->
+  <node name="spawn_camera" pkg="gazebo_ros" type="spawn_model" args="-gazebo -param camera_description -x 2.0 -y 1.3 -Y 3.14 -model camera"  respawn="false" output="screen" />
 
 </launch>

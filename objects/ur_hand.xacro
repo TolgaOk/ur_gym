@@ -16,7 +16,7 @@
     <!-- ========================== END ================================= -->
 
     <!-- ========================== HAND ================================ -->
-    <xacro:include filename="$(find allegro_hand_description)/allegro_hand_description_right.urdf.xacro"/>
+    <xacro:include filename="$(find ur_gym)/objects/allegro_hand_modified_urdf/allegro_hand_description_right.urdf.xacro"/>
 
     <joint name="arm_to_hand_joint" type="fixed">
         <origin xyz="0 ${wrist_3_length+0.095} 0" rpy="${pi/-2.0} 0 0"/>

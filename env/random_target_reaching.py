@@ -24,7 +24,7 @@ from environment import ur10_env
 import os
 import numpy as np
 
-class env(ur10_env):
+class RandomTargetReaching(ur10_env):
     """ This task is a minimal robot manupulation task. Agent can be trained to
         learn robot's tip to the target position. At the training, target position
         is randomly generated in order to generalize the reaching process.
@@ -39,7 +39,7 @@ class env(ur10_env):
     """
     def __init__(self):
         launch_path = "/".join(os.path.realpath(__file__).split("/")[:-2] + ["launch", "RandomTargetReaching.launch"])
-        super(env, self).__init__("velocity", 10, launch_path)
+        super(RandomTargetReaching, self).__init__("velocity", 10, launch_path)
         self.action_dimension = 6
         self.observation_dimension = 15
 

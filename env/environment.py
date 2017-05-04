@@ -46,7 +46,7 @@ class ur10_env(object):
                 action: A length 6 iterable corresponding to each joint action.
             Return:
                 tip_position: X, Y, Z coordinate of the tip of the ur10.
-                next_state: Least values for the joint postion and their time derivatives.
+                next_state: Last values for the joint postion and their time derivatives.
 
         _reset:
             This method pause the gazebo and then resets the ur10 joint angles to the
@@ -117,7 +117,7 @@ class ur10_env(object):
 
         start_ros_time = rospy.Time.now()
         while True:
-            self.action_control.publish_all(action)
+            self._publish_function(action)
             elapsed_time = rospy.Time.now() - start_ros_time
             if elapsed_time > self.period*(4.0/5):
                 if elapsed_time > self.period:
@@ -136,11 +136,11 @@ class ur10_env(object):
     def _reset(self):
 
         rospy.wait_for_service("/gazebo/unpause_physics", timeout=2)
-        self.unpause()
         self.joints_initializer("robot", "", self.joint_names, self.initial_angle)
+        self.unpause()
         _state = rospy.wait_for_message("/joint_states", JointState, timeout=1.0)
         self.pause()
-        _state = np.concatenate([map(lambda i: i%np.pi, _state.position), _state.velocity], axis=0)
+        _state = np.concatenate([map(lambda i: i%(2*np.pi), _state.position), _state.velocity], axis=0)
         return _state
 
     def _additional_state_callback(self):
@@ -148,6 +148,10 @@ class ur10_env(object):
         classes may add.
         """
         pass
+
+    def _publish_function(self, action):
+        self.action_control.publish_all(action)
+
 
     def _distance_to_target(self, link, target):
         return np.sqrt(np.sum([(x-y)**2 for x, y in zip(link, target)]))
